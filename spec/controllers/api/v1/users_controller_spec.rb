@@ -92,4 +92,16 @@ RSpec.describe Api::V1::UsersController do
       end
     end
   end
+
+
+  describe 'DELETE #destroy' do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      delete :destroy, params: { id: @user.id, format: :json }
+    end
+
+    it 'should respond with 204' do
+      expect(response.status).to eql(204)
+    end
+  end
 end
