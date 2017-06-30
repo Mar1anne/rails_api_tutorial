@@ -12,7 +12,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
       before(:each) do
         credentials = { email: @user.email, password: '123456789' }
-        post :create, params: {session: credentials}
+        post :create, params: { session: credentials }
       end
 
       it 'returns user record' do
@@ -27,7 +27,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
     context 'when credentials are incorrect' do
       before(:each) do
         credentials = { email: @user.email, password: 'invalid' } # not the same pass from Factory
-        post :create, params: {session: credentials}
+        post :create, params: { session: credentials }
       end
 
       it 'returns error json' do
@@ -37,5 +37,15 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       it { expect(response.status).to eql 422 }
     end
 
+  end
+
+  describe 'DELETE #destroy' do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      sign_in @user, scope: :user
+      delete :destroy, params: { id: @user.auth_token }
+    end
+
+    it { expect(response.status).to eql 204 }
   end
 end
