@@ -3,17 +3,18 @@ require 'rails_helper'
 RSpec.describe Api::V1::UsersController do
   include FactoryGirl
 
-  before(:each) { request.headers['Accept'] = "application/vnd.marketplace.v1" }
+  # before(:each) { request.headers['Accept'] = "application/vnd.marketplace.v1" }
+  # before(:each) { request.headers['Content-Type'] = Mime::JSON.to_s }
 
-  describe "GET #show" do
+  describe 'GET #show' do
     before(:each) do
       @user = FactoryGirl.create :user
-      get :show, params: { id: @user.id, format: :json }
+      get :show, params: { id: @user.id }
       # get :show, id: @user.id, format: :json
     end
 
-    it "returns the information about a reporter on a hash" do
-      user_response = JSON.parse(response.body, symbolize_names: true)
+    it 'returns the information about a reporter on a hash' do
+      user_response = json_response
       expect(user_response[:email]).to eql @user.email
     end
 
@@ -27,11 +28,11 @@ RSpec.describe Api::V1::UsersController do
     context 'when successfully created' do
       before(:each) do
         @user_attr = FactoryGirl.attributes_for(:user)
-        post :create, params: { user: @user_attr, format: :json }
+        post :create, params: { user: @user_attr }
       end
 
       it 'renders json representation of user' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql(@user_attr[:email])
       end
 
@@ -44,7 +45,7 @@ RSpec.describe Api::V1::UsersController do
     context 'when not created' do
       before(:each) do
         @invalid_user_attr = { password: '1231322', password_confirmation: '1231322' }
-        post :create, params: { user: @invalid_user_attr, format: :json }
+        post :create, params: { user: @invalid_user_attr }
       end
 
       # it 'renders error json' do
@@ -62,11 +63,11 @@ RSpec.describe Api::V1::UsersController do
     context 'when successfully created' do
       before(:each) do
         @user = FactoryGirl.create :user
-        patch :update, params: { id: @user.id, email: 'new@email.com' }, format: :json
+        patch :update, params: { id: @user.id, email: 'new@email.com' }
       end
 
       it 'renders user json' do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql('new@email.com')
       end
 
@@ -79,11 +80,11 @@ RSpec.describe Api::V1::UsersController do
     context 'when not created' do
       before(:each) do
         @user = FactoryGirl.create :user
-        patch :update, params: { id: @user.id, email: 'email.com' }, format: :json
+        patch :update, params: { id: @user.id, email: 'email.com' }
       end
 
       it 'renders error json' do
-        error_response = JSON.parse(response.body, symbolize_names: true)
+        error_response = json_response
         expect(error_response).not_to be_nil
       end
 
@@ -97,7 +98,7 @@ RSpec.describe Api::V1::UsersController do
   describe 'DELETE #destroy' do
     before(:each) do
       @user = FactoryGirl.create :user
-      delete :destroy, params: { id: @user.id, format: :json }
+      delete :destroy, params: { id: @user.id }
     end
 
     it 'should respond with 204' do
