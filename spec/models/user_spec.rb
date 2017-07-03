@@ -20,6 +20,8 @@ RSpec.describe User, type: :model do
 
   it { should be_valid }
 
+  it { should have_many :products }
+
   describe 'generate authentication token' do
     it 'generates a unique token' do
       allow(Devise).to receive(:friendly_token).and_return("auniquetoken123")
@@ -34,6 +36,21 @@ RSpec.describe User, type: :model do
       expect(@user.auth_token).not_to eql existing_user.auth_token
     end
 
+  end
+
+  describe '#products association' do
+    before do
+      @user.save
+      3.times { FactoryGirl.create :product, user: @user }
+    end
+
+    it 'destroys the associated products on self destruct' do
+      products = @user.products
+      @user.destroy
+      products.each { |product|
+        expect(Product.findl(product)).to raise_error ActiveRecordError::RecordNotFound
+      }
+    end
   end
 
 end
