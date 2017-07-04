@@ -46,6 +46,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
       it 'renders the json representation' do
         product_response = json_response
+        debugger
         expect(product_response[:title]).to eql @product_attr[:title]
       end
 
