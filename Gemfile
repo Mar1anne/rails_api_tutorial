@@ -17,7 +17,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 
 # Api gems
-gem 'active_model_serializers'
+gem 'active_model_serializers', '~> 0.10.0'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -45,3 +46,5 @@ group :test do
 end
 
 gem "devise"
+
+
