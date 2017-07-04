@@ -18,6 +18,11 @@ RSpec.describe Api::V1::UsersController do
       expect(user_response[:email]).to eql @user.email
     end
 
+    it 'has the product ids as an embeded object' do
+      user_response = json_response
+      expect(user_response[:product_ids]).to eql []
+    end
+
     it 'responds with status code 200' do
       expect(response.status).to eql(200)
     end
