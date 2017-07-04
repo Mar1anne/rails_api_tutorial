@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  validates :auth_token, uniqueness: true
+  validates :auth_token, uniqueness: true, allow_blank: true
   before_create :generate_authentication_token!
 
   has_many :products, dependent: :destroy

@@ -28,7 +28,7 @@ RSpec.describe Api::V1::UsersController do
     context 'when successfully created' do
       before(:each) do
         @user_attr = FactoryGirl.attributes_for(:user)
-        post :create, params: { user: @user_attr }
+        post :create, params: @user_attr
       end
 
       it 'renders json representation of user' do
@@ -45,7 +45,7 @@ RSpec.describe Api::V1::UsersController do
     context 'when not created' do
       before(:each) do
         @invalid_user_attr = { password: '1231322', password_confirmation: '1231322' }
-        post :create, params: { user: @invalid_user_attr }
+        post :create, params: @invalid_user_attr
       end
 
       # it 'renders error json' do
