@@ -13,6 +13,11 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       expect(product_response[:title]).to eql(@product.title)
     end
 
+    it 'has the user as embedded object' do
+      product_response = json_response
+      expect(product_response[:user][:email]).to eql @product.user.email
+    end
+
     it 'returns status code 200' do
       expect(response.status).to eql 200
     end
@@ -27,6 +32,13 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     it 'returns 4 records from db' do
       products_response = json_response
       expect(products_response.count).to eql 4
+    end
+
+    it 'returns the user for each object' do
+      product_response = json_response
+      product_response.each do | product |
+        expect(product[:user]).to be_present
+      end
     end
 
     it 'returns status code 200' do
