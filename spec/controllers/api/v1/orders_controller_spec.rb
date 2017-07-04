@@ -29,6 +29,14 @@ RSpec.describe Api::V1::OrdersController, type: :controller do
       expect(json_response[:id]).to eql @order.id
     end
 
+    it 'includes the total for the order' do
+      expect(json_response[:total]).to eql @order.total.to_s
+    end
+
+    it 'includes the products for the order' do
+      expect(json_response[:total]).not_to be_nil
+    end
+
     it { expect(response.status).to eql 200 }
   end
 
