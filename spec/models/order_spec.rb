@@ -31,4 +31,17 @@ RSpec.describe Order, type: :model do
     end
   end
 
+  describe '#build_placements_with_product_ids_and_quantities' do
+    before(:each) do
+      product_1 = FactoryGirl.create :product, price: 100, quantity: 5
+      product_2 = FactoryGirl.create :product, price: 80, quantity: 10
+
+      @product_ids_and_quantities = [[product_1.id, product_1.quantity], [product_2.id, product_2.quantity]]
+    end
+
+    it 'builds 2 placements for the order' do
+      expect{order.build_placements_with_product_ids_and_quantities(@product_ids_and_quantities)}.to change{order.placements.size}.from(0).to(2)
+    end
+  end
+
 end
